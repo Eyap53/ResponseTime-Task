@@ -114,7 +114,7 @@
                 stimulus: data.stimulus,
                 response: data.response,
                 correct: data.correct,
-                rt: data.rt
+                response_time: data.rt
             };
             fetch('https://neuroflow-saas.vercel.app/api/participants/actions/submit-result', {
                 method: "POST",
