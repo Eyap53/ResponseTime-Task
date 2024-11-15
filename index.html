@@ -12,12 +12,33 @@
 
 <body></body>
 <script>
+    // Function to get URL parameters
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Get participant ID and Task ID from URL
+    var participantId = getUrlParameter('participantId');
+    var taskId = getUrlParameter('taskId');
 
     /* initialize jsPsych */
     var jsPsych = initJsPsych({
-        on_finish: function () {
-            jsPsych.data.displayData();
-        }
+        on_finish: () => {
+            var data = {
+                participant_id: participantId,
+                task_id: taskId
+            };
+            fetch('https://neuroflow-saas.vercel.app/api/participants/actions/finish-flow-element', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            });
+        },
     });
 
     /* create timeline */
